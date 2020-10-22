@@ -4,6 +4,15 @@ provider "aws" {
   secret_key = var.aws_secret
 }
 
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 3.11.0"
+    }
+  }
+}
+
 data "aws_ami" "ubuntu" {
   most_recent = true
 
@@ -23,7 +32,7 @@ data "aws_ami" "ubuntu" {
 resource "aws_key_pair" "ecs" {
 
   key_name   = var.key_name
-  public_key = "${file(pathexpand("~/.ssh/id_rsa.pub"))}"
+  public_key = file(pathexpand("~/.ssh/id_rsa.pub"))
 }
 
 resource "aws_security_group" "allow_ssh" {
@@ -51,7 +60,7 @@ resource "aws_security_group" "allow_ssh" {
 }
 
 resource "aws_instance" "test" {
-  ami           = "${data.aws_ami.ubuntu.id}"
+  ami           = data.aws_ami.ubuntu.id
   #instance_type = "t2.micro"
   instance_type = var.instance_type
   key_name   = var.key_name

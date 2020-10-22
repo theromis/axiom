@@ -29,5 +29,5 @@ variable "key_name" {
 variable "cidr_blocks" {
   description = "A list of CIDR blocks to associate with"
   type        = list(string)
-  default     = ["64.201.252.46/32"]
+  default     = ["76.77.185.130/32"]
 }
